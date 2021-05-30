@@ -1,9 +1,9 @@
 {
-  "name": "decentragram",
+  "name": "proof-of-workout",
   "version": "0.1.0",
-  "description": "Decentralized Social Media",
-  "author": "Dapp University",
-  "homepage": ".",
+  "description": "Decentralized Body Challenge",
+  "author": "Tippi Fifestarr",
+  "homepage": "https://tippi-fifestarr.github.io/proof-of-workout/",
   "dependencies": {
     "@truffle/hdwallet-provider": "^1.1.0",
     "babel-polyfill": "6.26.0",

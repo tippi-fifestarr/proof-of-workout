@@ -39,7 +39,8 @@ class App extends Component {
     const networkId = await web3.eth.net.getId()
     const networkData = BCBC.networks[networkId]
     if(networkData) {
-      const bcbc = new web3.eth.Contract(BCBC.abi, networkData.address)
+      // hard coded the deployed to polygon new contract address
+      const bcbc = new web3.eth.Contract(BCBC.abi, '0x4C7fd038F14154B9a0C38BC4d53e567317DdB45a')
       this.setState({ bcbc })
       const workoutCount = await bcbc.methods.workoutCount().call()
       this.setState({ workoutCount })
@@ -77,7 +78,7 @@ class App extends Component {
     }
   }
 
-  uploadWorkout = description => {
+  uploadWorkout = (description, title) => {
     console.log("Submitting file to ipfs...")
 
     //adding file to the IPFS
@@ -89,7 +90,7 @@ class App extends Component {
       }
 
       this.setState({ loading: true })
-      this.state.bcbc.methods.uploadWorkout(result[0].hash, "Title", description).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.state.bcbc.methods.uploadWorkout(result[0].hash, title, description).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({ loading: false })
       })
     })
@@ -98,6 +99,20 @@ class App extends Component {
   tipWorkoutCreator(id, tipAmount) {
     this.setState({ loading: true })
     this.state.bcbc.methods.tipWorkoutCreator(id).send({ from: this.state.account, value: tipAmount }).on('transactionHash', (hash) => {
+      this.setState({ loading: false })
+    })
+  }
+
+  validateWorkout(id) {
+    this.setState({ loading: true })
+    this.state.bcbc.methods.validateWorkout(id).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.setState({ loading: false })
+    })
+  }
+
+  killWorkout(id) {
+    this.setState({ loading: true })
+    this.state.bcbc.methods.killWorkout(id).send({ from: this.state.account }).on('transactionHash', (hash) => {
       this.setState({ loading: false })
     })
   }
@@ -115,6 +130,8 @@ class App extends Component {
     this.uploadWorkout = this.uploadWorkout.bind(this)
     this.tipWorkoutCreator = this.tipWorkoutCreator.bind(this)
     this.captureFile = this.captureFile.bind(this)
+    this.validateWorkout = this.validateWorkout.bind(this)
+    this.killWorkout = this.killWorkout.bind(this)
   }
 
   render() {
@@ -129,8 +146,11 @@ class App extends Component {
               captureFile={this.captureFile}
               uploadWorkout={this.uploadWorkout}
               tipWorkoutCreator={this.tipWorkoutCreator}
+              validateWorkout={this.validateWorkout}
+              killWorkout={this.killWorkout}
             />
         }
+        https://github.com/tippi-fifestarr/proof-of-workout
       </div>
     );
   }

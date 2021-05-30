@@ -1,6 +1,6 @@
-import Decentragram from '../abis/Decentragram.json'
+import BCBC from '../abis/BCBC.json'
 import React, { Component } from 'react';
-import Identicon from 'identicon.js';
+// import Identicon from 'identicon.js';
 import Navbar from './Navbar'
 import Main from './Main'
 import Web3 from 'web3';
@@ -37,26 +37,30 @@ class App extends Component {
     this.setState({ account: accounts[0] })
     // Network ID
     const networkId = await web3.eth.net.getId()
-    const networkData = Decentragram.networks[networkId]
+    const networkData = BCBC.networks[networkId]
     if(networkData) {
-      const decentragram = new web3.eth.Contract(Decentragram.abi, networkData.address)
-      this.setState({ decentragram })
-      const imagesCount = await decentragram.methods.imageCount().call()
-      this.setState({ imagesCount })
-      // Load images
-      for (var i = 1; i <= imagesCount; i++) {
-        const image = await decentragram.methods.images(i).call()
+      const bcbc = new web3.eth.Contract(BCBC.abi, networkData.address)
+      this.setState({ bcbc })
+      const workoutCount = await bcbc.methods.workoutCount().call()
+      this.setState({ workoutCount })
+      //load challenge Words!
+      const challengeWords = await bcbc.methods.challengeWords().call()
+      this.setState({ challengeWords })
+
+      // Load Videos
+      for (var i = 1; i <= workoutCount; i++) {
+        const workout = await bcbc.methods.workouts(i).call()
         this.setState({
-          images: [...this.state.images, image]
+          workouts: [...this.state.workouts, workout]
         })
       }
-      // Sort images. Show highest tipped images first
+      // Sort Workout. Show highest tipped Workout first
       this.setState({
-        images: this.state.images.sort((a,b) => b.tipAmount - a.tipAmount )
+        workouts: this.state.workouts.sort((a,b) => b.tipAmount - a.tipAmount )
       })
       this.setState({ loading: false})
     } else {
-      window.alert('Decentragram contract not deployed to detected network.')
+      window.alert('bcbc contract not deployed to detected network.')
     }
   }
 
@@ -73,7 +77,7 @@ class App extends Component {
     }
   }
 
-  uploadImage = description => {
+  uploadWorkout = description => {
     console.log("Submitting file to ipfs...")
 
     //adding file to the IPFS
@@ -85,15 +89,15 @@ class App extends Component {
       }
 
       this.setState({ loading: true })
-      this.state.decentragram.methods.uploadImage(result[0].hash, description).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.state.bcbc.methods.uploadWorkout(result[0].hash, "Title", description).send({ from: this.state.account }).on('transactionHash', (hash) => {
         this.setState({ loading: false })
       })
     })
   }
 
-  tipImageOwner(id, tipAmount) {
+  tipWorkoutCreator(id, tipAmount) {
     this.setState({ loading: true })
-    this.state.decentragram.methods.tipImageOwner(id).send({ from: this.state.account, value: tipAmount }).on('transactionHash', (hash) => {
+    this.state.bcbc.methods.tipWorkoutCreator(id).send({ from: this.state.account, value: tipAmount }).on('transactionHash', (hash) => {
       this.setState({ loading: false })
     })
   }
@@ -102,13 +106,14 @@ class App extends Component {
     super(props)
     this.state = {
       account: '',
-      decentragram: null,
-      images: [],
-      loading: true
+      bcbc: null,
+      workouts: [],
+      loading: true,
+      challengeWords: ""
     }
 
-    this.uploadImage = this.uploadImage.bind(this)
-    this.tipImageOwner = this.tipImageOwner.bind(this)
+    this.uploadWorkout = this.uploadWorkout.bind(this)
+    this.tipWorkoutCreator = this.tipWorkoutCreator.bind(this)
     this.captureFile = this.captureFile.bind(this)
   }
 
@@ -119,10 +124,11 @@ class App extends Component {
         { this.state.loading
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
           : <Main
-              images={this.state.images}
+              challengeWords={this.state.challengeWords}
+              workouts={this.state.workouts}
               captureFile={this.captureFile}
-              uploadImage={this.uploadImage}
-              tipImageOwner={this.tipImageOwner}
+              uploadWorkout={this.uploadWorkout}
+              tipWorkoutCreator={this.tipWorkoutCreator}
             />
         }
       </div>

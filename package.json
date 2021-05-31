@@ -5,6 +5,9 @@
   "author": "Tippi Fifestarr",
   "homepage": "https://tippi-fifestarr.github.io/proof-of-workout/",
   "dependencies": {
+    "@chainlink/contracts": "^0.1.7",
+    "@openzeppelin/contracts": "^4.1.0",
+    "@poanet/solidity-flattener": "^3.0.6",
     "@truffle/hdwallet-provider": "^1.1.0",
     "babel-polyfill": "6.26.0",
     "babel-preset-env": "1.7.0",

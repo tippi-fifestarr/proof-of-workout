@@ -1,4 +1,12 @@
 ## Hello World, how to improve this
+https://docs.google.com/document/d/1dmQs7n2Jm-YgwVIvUvSq4whpirBdSiarRvTJjNgRYc4/edit#
+https://tippi-fifestarr.github.io/proof-of-workout/ 
+//NFBody deployed on Mumbai Testnet 0x8Fc5AD4463688C5141e96919e81E7b3b01506D39
+//Verified BCBC on Mumbai https://explorer-mumbai.maticvigil.com/address/0x4C7fd038F14154B9a0C38BC4d53e567317DdB45a/read-contract 
+
+//0x8Fc5AD4463688C5141e96919e81E7b3b01506D39 has been stocked with 2 Link
+https://github.com/tippi-fifestarr/proof-of-workout
+git add .
 a simple proof-of-concept, front-end still needs to add function to Verify (✔️) and Reject (X).  
 I'd like to add a border around fully verified videos (and maybe remove the vote buttons?)
 When the threshold is reached, if your account is the one that made the video, show a button "Mint NFBody"

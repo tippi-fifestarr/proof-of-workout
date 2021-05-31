@@ -59,6 +59,31 @@ class Main extends Component {
                     <ul id="workoutList" className="list-group list-group-flush">
                       <li className="list-group-item">
                         <h5>title: {workout.title}</h5>
+
+                        {/* this is where we have the mint random NFT stats */}
+                        {/* a form that lets us input title and  */}
+                <form onSubmit={(event) => {
+                   event.preventDefault()
+                
+                  const seed = this.userGeneratedSeed.value
+                  this.props.getRandomNumber(seed, workout.title)
+              }} >
+                  <div className="form-group mr-sm-2">
+                  <br></br>
+                      
+                    <input
+                      id="userGeneratedSeed"
+                      type="number"
+                      ref={(input) => { this.userGeneratedSeed = input }}
+                      className="form-control"
+                      placeholder="user Generated Seed... (numbers"
+                      required />
+                  </div>
+                <button type="submit" className="btn btn-secondary btn-block btn-lg">Chainlink Random NFBody Button!</button>
+              </form>
+                            
+                            
+
                         <div className="embed-responsive embed-responsive-16by9" style={{ maxHeight: '768px'}}>
                           <video
                             src={`https://ipfs.infura.io/ipfs/${workout.hash}`}
@@ -110,6 +135,7 @@ class Main extends Component {
                         >
                           TIP 0.1 ETH
                         </button>
+                        
                       </li>
                     </ul>
                   </div>

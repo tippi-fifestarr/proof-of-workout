@@ -1,4 +1,5 @@
 import BCBC from '../abis/BCBC.json'
+import NFBody from '../abis/NFBody.json'
 import React, { Component } from 'react';
 // import Identicon from 'identicon.js';
 import Navbar from './Navbar'
@@ -40,6 +41,8 @@ class App extends Component {
     const networkData = BCBC.networks[networkId]
     if(networkData) {
       // hard coded the deployed to polygon new contract address
+      const nfb = new web3.eth.Contract(NFBody.abi, '0x8Fc5AD4463688C5141e96919e81E7b3b01506D39')
+      this.setState({ nfb })
       const bcbc = new web3.eth.Contract(BCBC.abi, '0x4C7fd038F14154B9a0C38BC4d53e567317DdB45a')
       this.setState({ bcbc })
       const workoutCount = await bcbc.methods.workoutCount().call()
@@ -61,7 +64,7 @@ class App extends Component {
       })
       this.setState({ loading: false})
     } else {
-      window.alert('bcbc contract not deployed to detected network.')
+      window.alert('Proof-of-Workout is deployed on Polygon Mumbai, check your MetaMask settings.')
     }
   }
 
@@ -117,11 +120,25 @@ class App extends Component {
     })
   }
 
+
+  // try to connect to chainlink vrf thingy
+  getRandomNumber(seed, title) {
+    this.setState({ loading: true })
+    this.state.nfb.methods.getRandomNumber(seed, title).send({ from: this.state.account }).on('transactionHash', (hash) => {
+      this.setState({ loading: false })
+    })
+  }
+
+  // randomResult() {
+  //   this.state.nfb.methods.randomResult().call()
+  // }
+
   constructor(props) {
     super(props)
     this.state = {
       account: '',
       bcbc: null,
+      nfb: null,
       workouts: [],
       loading: true,
       challengeWords: ""
@@ -132,6 +149,7 @@ class App extends Component {
     this.captureFile = this.captureFile.bind(this)
     this.validateWorkout = this.validateWorkout.bind(this)
     this.killWorkout = this.killWorkout.bind(this)
+    this.getRandomNumber = this.getRandomNumber.bind(this)
   }
 
   render() {
@@ -148,8 +166,18 @@ class App extends Component {
               tipWorkoutCreator={this.tipWorkoutCreator}
               validateWorkout={this.validateWorkout}
               killWorkout={this.killWorkout}
+              getRandomNumber={this.getRandomNumber}
             />
         }
+        <br></br>
+                        <button
+                          onClick={async (event) => {
+                            console.log("clicked")
+                            console.log(await this.state.nfb.methods.randomResult().call())
+                          }}
+                        >
+                          console.log random number
+                        </button>
         https://github.com/tippi-fifestarr/proof-of-workout
       </div>
     );

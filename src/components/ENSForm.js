@@ -17,13 +17,15 @@ function Query(props){
     const { loading, error, data } = useQuery(GET_ADDRESS, {
         variables: {name}
     });
-    let definedData = ''
+    let resolvedAddress = ''
     
     if(!loading && !error){
         try{
-            definedData = data.domains[0].resolvedAddress.id
+            resolvedAddress = data.domains[0].resolvedAddress.id
             alert('Success! Found ENS domain name')
-            console.log(data.domains[0].resolvedAddress.id)
+            console.log(resolvedAddress)
+            props.setEns(name)
+            props.setFormEns(null)
         }
         catch(err){
             alert('Could not find ENS domain name, probably not registered')
@@ -40,9 +42,10 @@ class ENSForm extends React.Component{
     constructor(props){
         super(props)
         this.state ={
-            ens: null
+            ens: null,
         }
         this.onFormSubmit = this.onFormSubmit.bind(this)
+        this.setEns = this.setEns.bind(this)
     }
     onFormSubmit = (e) => {
         e.preventDefault();
@@ -50,6 +53,14 @@ class ENSForm extends React.Component{
         const name = this.refs.name.value
         this.setState({ens: name})
 
+    }
+
+    setEns = (ens) => {
+        this.props.setEns(ens)
+    }
+
+    setFormEns = (ens) => {
+        this.setState({ens: ens})
     }
     render(){
         return (
@@ -62,7 +73,7 @@ class ENSForm extends React.Component{
                     />
                     <input type='submit' />
                 </form>
-                {this.state.ens ? <Query name={this.state.ens}></Query>: null}
+                {this.state.ens ? <Query name={this.state.ens} setEns={this.setEns} setFormEns={this.setFormEns}></Query>: null}
             </div>
         );
     }

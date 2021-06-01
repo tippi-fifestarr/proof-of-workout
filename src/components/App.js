@@ -134,6 +134,10 @@ class App extends Component {
   //   this.state.nfb.methods.randomResult().call()
   // }
 
+  setEns(ens){
+    this.setState({ens: ens})
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -142,7 +146,8 @@ class App extends Component {
       nfb: null,
       workouts: [],
       loading: true,
-      challengeWords: ""
+      challengeWords: "",
+      ens: null
     }
 
     this.uploadWorkout = this.uploadWorkout.bind(this)
@@ -151,15 +156,16 @@ class App extends Component {
     this.validateWorkout = this.validateWorkout.bind(this)
     this.killWorkout = this.killWorkout.bind(this)
     this.getRandomNumber = this.getRandomNumber.bind(this)
+    this.setEns = this.setEns.bind(this)
   }
 
   render() {
     return (
       <div>
-        <Navbar account={this.state.account} />
+        <Navbar account={this.state.account} accountEns={this.state.ens}/>
         <br></br>
         <br></br>
-        <ENSForm/>
+        <ENSForm setEns={this.setEns}/>
         { this.state.loading
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
           : <Main

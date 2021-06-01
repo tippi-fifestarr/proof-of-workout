@@ -6,6 +6,7 @@ import Navbar from './Navbar'
 import Main from './Main'
 import Web3 from 'web3';
 import './App.css';
+import ENSForm from './ENSForm';
 
 //Declare IPFS
 const ipfsClient = require('ipfs-http-client')
@@ -156,6 +157,9 @@ class App extends Component {
     return (
       <div>
         <Navbar account={this.state.account} />
+        <br></br>
+        <br></br>
+        <ENSForm/>
         { this.state.loading
           ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
           : <Main
@@ -170,14 +174,14 @@ class App extends Component {
             />
         }
         <br></br>
-                        <button
-                          onClick={async (event) => {
-                            console.log("clicked")
-                            console.log(await this.state.nfb.methods.randomResult().call())
-                          }}
-                        >
-                          console.log random number
-                        </button>
+        <button
+          onClick={async (event) => {
+            console.log("clicked")
+            console.log(await this.state.nfb.methods.randomResult().call())
+          }}
+        >
+          console.log random number
+        </button>
         https://github.com/tippi-fifestarr/proof-of-workout
       </div>
     );

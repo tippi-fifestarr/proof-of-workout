@@ -1,3 +1,6 @@
+## Thanks
+Big shout out to Chainlink and DApp University and everyone who believed in me!
+
 ## Hello World, how to improve this
 https://docs.google.com/document/d/1dmQs7n2Jm-YgwVIvUvSq4whpirBdSiarRvTJjNgRYc4/edit#
 https://tippi-fifestarr.github.io/proof-of-workout/ 
@@ -7,7 +10,8 @@ https://tippi-fifestarr.github.io/proof-of-workout/
 //0x8Fc5AD4463688C5141e96919e81E7b3b01506D39 has been stocked with 2 Link
 https://github.com/tippi-fifestarr/proof-of-workout
 git add .
-a simple proof-of-concept, front-end still needs to add function to Verify (✔️) and Reject (X).  
+a simple proof-of-concept, front-end still needs to only show "Mint NFT" Button if Verify (✔️) conditions are met.  
+I'd like to reward the voters and have a follow-up REQUEST FULL VIDEO button.
 I'd like to add a border around fully verified videos (and maybe remove the vote buttons?)
 When the threshold is reached, if your account is the one that made the video, show a button "Mint NFBody"
 For the backend, still want to add an incentive layer such as removing the rejected ones, requiring a vote deposit (like staking your vote) which gets distributed to the good voters if your vote is vetoed by majority.
